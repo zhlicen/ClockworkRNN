@@ -12,7 +12,6 @@ class ClockworkRNN(object):
     each processing inputs at its own temporal granularity, making computations only at its prescribed clock rate.
     Rather than making the standard RNN models more complex, CW-RNN reduces the number of RNN parameters,
     improves the performance significantly in the tasks tested, and speeds up the network evaluation
-    
     '''
 
 
