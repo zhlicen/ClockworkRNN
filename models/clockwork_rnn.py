@@ -27,7 +27,7 @@ class ClockworkRNN(object):
         assert self.config.num_hidden % len(self.config.periods) == 0
 
         # The size of each group(number of neuron of each Group)
-        self.group_size = self.config.num_hidden / len(self.config.periods)
+        self.group_size = self.config.num_hidden // len(self.config.periods)
 
         # Global training step
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
