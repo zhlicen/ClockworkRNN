@@ -12,7 +12,7 @@ class ClockworkRNN(object):
     each processing inputs at its own temporal granularity, making computations only at its prescribed clock rate.
     Rather than making the standard RNN models more complex, CW-RNN reduces the number of RNN parameters,
     improves the performance significantly in the tasks tested, and speeds up the network evaluation
-
+    
     '''
 
 
@@ -25,6 +25,9 @@ class ClockworkRNN(object):
         # this is not a requirement in the paper; there the extra neurons are
         # divided over the higher frequency groups.
         assert self.config.num_hidden % len(self.config.periods) == 0
+
+        # The size of each group(number of neuron of each Group)
+        self.group_size = self.config.num_hidden / len(self.config.periods)
 
         # Global training step
         self.global_step = tf.Variable(0, name='global_step', trainable=False)
@@ -101,6 +104,9 @@ class ClockworkRNN(object):
                     # Check if (t MOD T_i == 0)
                     if time_step % self.clockwork_periods[i] == 0:
                         group_index = i+1  # note the +1
+
+                # the real index of group in matrix
+                group_index = self.group_size * group_index
 
                 # Compute (W_I*x_t + b_I)
                 WI_x = tf.matmul(x_list[time_step], tf.slice(self.input_W, [0, 0], [-1, group_index]))
